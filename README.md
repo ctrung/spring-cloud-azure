@@ -1,47 +1,49 @@
-# Getting Started
+## Documentation de référence
 
-### Reference Documentation
+* [Authentification Azure Spring Cloud](https://learn.microsoft.com/fr-fr/azure/developer/java/spring-framework/authentication)
+* [Azure Identity client library for Java](https://learn.microsoft.com/fr-fr/java/api/overview/azure/identity-readme?view=azure-java-stable)
 
-For further reference, please consider the following sections:
-
-* [Official Apache Maven documentation](https://maven.apache.org/guides/index.html)
-* [Spring Boot Maven Plugin Reference Guide](https://docs.spring.io/spring-boot/docs/3.0.6/maven-plugin/reference/html/)
-* [Create an OCI image](https://docs.spring.io/spring-boot/docs/3.0.6/maven-plugin/reference/html/#build-image)
 * [Azure Key Vault](https://microsoft.github.io/spring-cloud-azure/current/reference/html/index.html#secret-management)
+* [Charger un secret à partir d’Azure Key Vault dans une application Spring Boot](https://learn.microsoft.com/fr-fr/azure/developer/java/spring-framework/configure-spring-boot-starter-java-app-with-azure-key-vault)
 
-### Guides
+* [Azure Database for MySQL - Flexible Server](https://learn.microsoft.com/en-us/azure/mysql/flexible-server/overview)
+* [Use Spring Data JPA with Azure Database for MySQL](https://learn.microsoft.com/en-us/azure/developer/java/spring-framework/configure-spring-data-jpa-with-azure-mysql)
 
-The following guides illustrate how to use some features concretely:
+## Prérequis
 
-* [Read Secrets from Azure Key Vault in a Spring Boot Application](https://aka.ms/spring/msdocs/keyvault)
-* [Securing Spring Boot Applications with Azure Key Vault Certificates](https://aka.ms/spring/msdocs/keyvault/certificates)
+* Un service Azure Keyvault 
+* Un service Azure MySQL Flexible server (Single server déprécié)
 
-### Prérequis 
+En plus, pour une exécution sur le poste local :
+* Azure CLI (v2.48.1 testé avec succès) + compte Azure \
+ou 
+* Un service principle 
 
-* Avoir un compte / soupscription Azure
-* Créer une ressource Azure Keyvault
+En plus, pour un déploiement sur Azure : 
+* Une identité managée
 
-### Lancement
+## Exécution poste local
 
-Sur le poste développeur, testé avec succès avec **Azure CLI v2.48.1**. \
-A noter qu'avec **Azure CLI v2.0.81** (version présente au sein du repo Linux Mint), 
-les messages d'avertissement sur stderr provoquent des erreurs de parsing JSON.
+### Avec Azure CLI
+```
+az login # suivre les indications s'affichant dans le navigateur web
 
-Comportement connu et corrigé pour azure-identity-js :\
-https://github.com/Azure/azure-sdk-for-js/issues/21075 \
-(non testé avec une version de azure-identity-java > 1.8.2)
+export AZURE_KEY_VAULT_NAME=...
+export AZURE_MYSQL_NAME=...
+export AZURE_DB_NAME=...
 
-Dans une console shell
+mvn spring-boot:run
+```
 
-`az login`
+### Avec un service principle
+```
+export AZURE_CLIENT_SECRET=...
+export AZURE_CLIENT_ID=...
+export AZURE_TENANT_ID=...
 
-Puis lancer l'application Spring Boot
+export AZURE_KEY_VAULT_NAME=...
+export AZURE_MYSQL_NAME=...
+export AZURE_DB_NAME=...
 
-`jar -jar ...`
-
-### Additional Links
-
-These additional references should also help you:
-
-* [Azure Key Vault Sample](https://aka.ms/spring/samples/latest/keyvault)
-
+mvn spring-boot:run
+```
