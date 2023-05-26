@@ -1,6 +1,5 @@
 package com.example.demo;
 
-import com.azure.security.keyvault.secrets.SecretClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
@@ -22,15 +21,11 @@ import java.util.stream.Stream;
 @SpringBootApplication
 public class DemoApplication implements CommandLineRunner {
 
-    // Spring Cloud Azure will automatically inject SecretClient in your ApplicationContext.
-    private final SecretClient secretClient;
-
     private final TodoRepository repository;
 
     private final Logger log = LoggerFactory.getLogger(DemoApplication.class);
 
-    public DemoApplication(SecretClient secretClient, TodoRepository repository) {
-        this.secretClient = secretClient;
+    public DemoApplication(TodoRepository repository) {
         this.repository = repository;
     }
 
@@ -41,16 +36,12 @@ public class DemoApplication implements CommandLineRunner {
     @Override
     public void run(String... args) {
 
-        String sname = "un-secret-bien-garde";
-        log.info("{} : {}", sname, secretClient.getSecret(sname).getValue());
-
+        // Remplissage de la BDD
         repository
                 .saveAll(Stream.of("A", "B", "C")
-                        .map(name->new Todo("configuration", "congratulations, you have set up correctly!", true))
+                        .map(name->new Todo("configuration " + name, "congratulations, you have set up correctly!", true))
                         .collect(Collectors.toList()))
-                .forEach(todo -> log.info("{}", todo));
-
-        System.exit(0);
+                .forEach(todo -> log.info("Created {}", todo));
     }
 }
 

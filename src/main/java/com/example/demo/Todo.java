@@ -26,4 +26,19 @@ public class Todo {
 
     private boolean done;
 
+    public Long getId() {
+        return id;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public String getDetails() {
+        return details;
+    }
+
+    public boolean isDone() {
+        return done;
+    }
 }
